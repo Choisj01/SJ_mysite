@@ -18,7 +18,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto.min.css"
     />
-    <!-- 약관동의 CSS -->
+    <!-- 약관동의CSS -->
     <link rel="stylesheet" href="./css/mem_join.css">
     <!-- 회원가입 페이지 CSS -->
     <link rel="stylesheet" href="./css/member.css" />
@@ -102,14 +102,17 @@
               <li>
                 <span class="itit">성별</span>
                 <label for="gen1">남성</label>
-                <input type="radio" name="gen" id="gen1" />
+                <input type="radio" name="gen" id="gen1" value="m" />
                 <label for="gen2">여성</label>
-                <input type="radio" name="gen" id="gen2" checked />
+                <input type="radio" name="gen" id="gen2" value="w" checked />
                 <!-- 라디오버튼의 name 속성을
-                          같은 이름으로 쓰면 그룹핑되어
-                          하나만 선택된다! 
+                     같은 이름으로 쓰면 그룹핑되어
+                     하나만 선택된다! 
 
-                          checked 속성 - 기본체크설정 -->
+                    - 백엔드에서 본 라디오버튼 선택값을
+                    읽으려면 value가 있어야 값을 읽어감!
+                    남성는 "m",여성은 "w"로 설정함!
+                    checked 속성 - 기본체크설정 -->
               </li>
               <!-- 이메일 -->
               <li>
