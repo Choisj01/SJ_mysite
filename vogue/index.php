@@ -32,6 +32,7 @@
     <body>
         <!-- 1. 상단영역 -->
         <?php include "inc/top_area.inc" ?>
+
         <!-- 2. 메인영역 -->
         <div id="main-area">
             <main class="main-area ibx">
@@ -96,6 +97,7 @@
                 </section>
             </main>
         </div>
+        
         <!-- 3. 하단영역 -->
         <?php include "inc/footer_area.inc" ?>
 
