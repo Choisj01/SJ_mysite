@@ -20,7 +20,7 @@ const chkEach = $('.chk');
 chkAll.change(function(){
     //  1. 체크박스 체크여부 확인하기-prop() 메서드 사용
     let isChk = $(this).prop('checked');
-    console.log('체크양?',isChk);
+    // console.log('체크양?',isChk);
 
     // 2. 전체 체크박스가 체크상태(true)이면
     // 개별체크박스도 모두 true로 체크상태 변경!
@@ -40,7 +40,7 @@ chkAll.change(function(){
 chkEach.change(function(){
     // 1. 체크개수 알아오기 : length -> 갯수 리턴
     let num=$('.chk:checked').length;
-    console.log('체크개수:',num);
+    // console.log('체크개수:',num);
 
     // 2. 체크개수가 3이면 전체 체크박스 체크하기
     if(num==3) chkAll.prop('checked',true);
@@ -56,7 +56,7 @@ chkEach.change(function(){
 $('.YNbox button').click(function(){
     // 1. 버튼 구분하기 : is동의버튼? -> is('#btnY)
     let isBtn = $(this).is('#btnY');
-    console.log('동의냐?:',isBtn);
+    // console.log('동의냐?:',isBtn);
 
     // 2. 동의버튼일 경우 : 필수체크확인 후 회원가입 허가!
     if(isBtn){
@@ -81,10 +81,6 @@ $('.YNbox button').click(function(){
     }//////////////////////else/////////////////////////
 
 }); ////////////////////////// click 이벤트 ///////////////////
-
-
-
-
 
 /************************************************************************** 
     [ 속성값을 읽어오는 메서드 2가지 ]
@@ -140,7 +136,7 @@ form.logF input[type=password]`)
         // 입력창 공백처리 후 재입력하기!
         $(this).val(cv);
 
-        console.log("나야나", cid, "/값은?", cv);
+        // console.log("나야나", cid, "/값은?", cv);
 
         /*****************************************************************
         3. 빈값 여부 검사하기 (필수 입력항목)
@@ -172,18 +168,85 @@ form.logF input[type=password]`)
             } ///////////if /////////
             else {
                 //통과시
+                /* 
+                    [ Ajax로 중복 아이디 검사하기! ]
+                    ajax 처리유형 2가지
+
+                    1) post방식 처리 메서드
+                    - $.post(URL,data,callback)
+
+                    2) get방식 처리 메서드
+                    - $.get(URL,callback)
+                    -> get방식은 URL로 키 = 값 형식으로
+                    데이터전송함!
+
+                    3) 위 두가지 유형 중 처리선택 메서드
+                    -$.ajax({
+                        전송할페이지,
+                        전송방식,
+                        보낼데이터,
+                        전송할데이터타입,
+                        비동기옵션,
+                        성공처리,
+                        실패처리
+                    })
+                    -> 보내는 값은 하나(객체데이터)
+                    -> 객체안에 7가지 유형의 데이터를 보냄!
+
+                */
+                    $.ajax({
+                        // 1. 전송할페이지(url)
+                        url:"./process/chkID.php",
+                        // 2. 전송방식(type)
+                        type:"post",
+                        // 3. 보낼데이터(data) - 객체형식(속성:(콜론)값)
+                        data:{"mid":$('#mid').val()},
+                        // 4. 전송할데이터타입(dataType)
+                        dataType:"html",
+                        // 5. 비동기옵션
+                        // -> 비동기옵션은 본처리를 비동기적으로 
+                        // 처리하겠다는 것임(기본값 true)
+                        // false로 해야 동기화처리되어 
+                        // 불통과시 pass=false가 유효함!
+                        async:false,
+                        // 6. 성공처리 (success)
+                        success:function(res){
+                            // res - 리턴된 결과값
+                            if(res=='ok'){
+                                $('#mid').siblings(".msg")
+                                .text("멋진 아이디네요~!")
+                                .addClass("on");
+                            } ////////////if : ok시 ///////////
+                            // 아이디가 중복일 경우//
+                            else{
+                                $('#mid').siblings(".msg")
+                                .text('이미 사용중인 아이디입니다')
+                                .removeClass("on");
+                                 //[ 불통과시 pass값 변경추가 ]
+                            pass = false;
+                            console.log('중복ID:',pass);
+                            } ///////////else : 아이디중복 /////////////
+                        },
+                        // 7.실패처리(error)
+                    // xhr - XMLHttpRequest객체
+                    // status - 실패상태코드
+                    // error - 에러결과값
+                    error:function(xhr,status,error){
+                        alert('연결처리실패:'+error);
+                    } ////// error //////
+                }); //////////// ajax 메서드 ///////////
+
+
                 // 1. DB에 조회하여 같은 아이디가 있다면
                 // '이미 사용중인 아이디입니다' 와 같은 메시지 출력
                 // 2. 만약 DB 조회하여 같은 Id가 없다면
                 // '멋진 아이디네요~!' 와 같은 메시지 출력
                 // 여기서 우선은 DB 조회 못하므로 통과시 메시지로 출력
                 //  메시지 띄우기
-                $(this).siblings(".msg")
-                .text("멋진 아이디네요~!")
-                .addClass("on");
+                // $(this).siblings(".msg")
+                // .text("멋진 아이디네요~!")
+                // .addClass("on");
                 // -> 비동기 통신 Ajax로 서버쪽에 아이디 중복검사 필요!
-
-                
             } //////else///////
 
         } //////////else if : 아이디 검사///////////
@@ -273,7 +336,7 @@ const seleml = $("#seleml");
 seleml.change(function(){
     // 1. 선택박스 변경된 값 읽어오기
     let cv = $(this).val();
-    console.log('선택값:',cv);
+    // console.log('선택값:',cv);
 
     // 2. 선택 옵션별 분기
     // 2-1."선택해주세요"일 경우
@@ -335,7 +398,7 @@ $('#email1,#email2')
     // 2. 현재 입력된 값 읽어오기
     // let cv=$(this).val();
 
-    console.log('입력아이디:',cid,'\n입력값:',cv);
+    // console.log('입력아이디:',cid,'\n입력값:',cv);
 
     // 3. 이메일 뒷주소 셋팅하기
     let backEml = 
@@ -505,7 +568,8 @@ $('#btnj').click(e=>{
                 // 성공시 ////////
                 if(res === 'ok'){
                     alert('회원가입을 축하드립니다! 짝짝짝!');
-                    // location.replace('login.php');
+                    // 최초 로그인 위해 로그인 페이지로!
+                    location.replace('login.php');
 
                 } ////////////if : 성공시 /////////////
                 // 실패시 /////////////////
